@@ -5,6 +5,7 @@ import me.melijn.excel.internals.FontOptions
 import me.melijn.excel.utils.rawCellValue
 import me.melijn.excel.utils.stringCellValueBlank
 import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -79,64 +80,71 @@ class Main(args: Array<String>) {
             when {
                 row.rowNum == 0 -> {
                     //Title row
-                    lRekeningCellName = lRekening.stringCellValue
-                    docNrCellName = docNr.stringCellValue
-                    referentiesCellName = referentie.stringCellValue
-                    docDatumCellName = docDatum.stringCellValue
-                    naamCellName = naam.stringCellValue
-                    rekeningNummerCellName = rekeningNummer.stringCellValue
-                    brutoBedragCellName = brutoBedrag.stringCellValue
-                    valdotCellName = valdot.stringCellValue
-                    btwCellName = btw.stringCellValue
-                    nettoFactCellName = nettoFact.stringCellValue
-                    kostenCellName = kosten.stringCellValue
-                    basisRvCellName = basisRv.stringCellValue
-                    percentRvCellName = percentRv.stringCellValue
-                    teBetLevCellName = teBetLev.stringCellValue
+                    lRekeningCellName = lRekening.rawCellValue
+                    docNrCellName = docNr.rawCellValue
+                    referentiesCellName = referentie.rawCellValue
+                    docDatumCellName = docDatum.rawCellValue
+                    naamCellName = naam.rawCellValue
+                    rekeningNummerCellName = rekeningNummer.rawCellValue
+                    brutoBedragCellName = brutoBedrag.rawCellValue
+                    valdotCellName = valdot.rawCellValue
+                    btwCellName = btw.rawCellValue
+                    nettoFactCellName = nettoFact.rawCellValue
+                    kostenCellName = kosten.rawCellValue
+                    basisRvCellName = basisRv.rawCellValue
+                    percentRvCellName = percentRv.rawCellValue
+                    teBetLevCellName = teBetLev.rawCellValue
 
                     map[row.rowNum] = arrayOf(
-                        CellInfo(rekeningNummerCellName, FontOptions(22)),
-                        CellInfo(teBetLevCellName, FontOptions(22)),
-                        CellInfo(referentiesCellName, FontOptions(22)),
-                        CellInfo(naamCellName, FontOptions()),
-                        CellInfo(lRekeningCellName, FontOptions()),
-                        CellInfo(docNrCellName, FontOptions()),
-                        CellInfo(docDatumCellName, FontOptions()),
-                        CellInfo("", FontOptions()),
-                        CellInfo(brutoBedragCellName, FontOptions()),
-                        CellInfo(valdotCellName, FontOptions()),
-                        CellInfo(btwCellName, FontOptions()),
-                        CellInfo(nettoFactCellName, FontOptions()),
-                        CellInfo(kostenCellName, FontOptions()),
-                        CellInfo(basisRvCellName, FontOptions()),
-                        CellInfo(percentRvCellName, FontOptions())
+                        CellInfo(rekeningNummerCellName, rekeningNummer.cellType, FontOptions(22)),
+                        CellInfo(teBetLevCellName, teBetLev.cellType, FontOptions(22)),
+                        CellInfo(referentiesCellName, referentie.cellType, FontOptions(22)),
+                        CellInfo(naamCellName, naam.cellType),
+                        CellInfo(lRekeningCellName, lRekening.cellType),
+                        CellInfo(docNrCellName, docNr.cellType),
+                        CellInfo(docDatumCellName, docDatum.cellType),
+                        CellInfo("", CellType.STRING),
+                        CellInfo(brutoBedragCellName, brutoBedrag.cellType),
+                        CellInfo(valdotCellName, valdot.cellType),
+                        CellInfo(btwCellName, btw.cellType),
+                        CellInfo(nettoFactCellName, nettoFact.cellType),
+                        CellInfo(kostenCellName, kosten.cellType),
+                        CellInfo(basisRvCellName, basisRv.cellType),
+                        CellInfo(percentRvCellName, percentRv.cellType)
                     )
                 }
                 rekeningNummer.stringCellValueBlank.isBlank() -> {
 
                     //fat row
                     map[row.rowNum] = arrayOf(
-                        CellInfo("", FontOptions(22)),
-                        CellInfo(teBetLev.numericCellValue, FontOptions(22, bold = true), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo("", FontOptions(22)),
-                        CellInfo("", FontOptions()),
-                        CellInfo(lRekening.stringCellValue, FontOptions(bold = true)),
-                        CellInfo("", FontOptions()),
-                        CellInfo("", FontOptions()),
-                        CellInfo("", FontOptions()),
-                        CellInfo(brutoBedrag.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo("", FontOptions()),
-                        CellInfo("", FontOptions()),
-                        CellInfo(nettoFact.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo("", FontOptions()),
-                        CellInfo("", FontOptions()),
-                        CellInfo(percentRv.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT)
+                        CellInfo("", font = FontOptions(22)),
+                        CellInfo(
+                            teBetLev.rawCellValue(teBetLev.columnIndex, 1),
+                            teBetLev.cellType, FontOptions(22, bold = true),
+                            HorizontalAlignment.RIGHT, format = teBetLev.cellStyle.dataFormat
+                        ),
+                        CellInfo("", font = FontOptions(22)),
+                        CellInfo(""),
+                        CellInfo(lRekening.rawCellValue, lRekening.cellType, FontOptions(bold = true)),
+                        CellInfo(""),
+                        CellInfo(""),
+                        CellInfo(""),
+                        CellInfo(
+                            brutoBedrag.rawCellValue(brutoBedrag.columnIndex, 8), brutoBedrag.cellType,
+                            horizontalAlignment = HorizontalAlignment.RIGHT, format = brutoBedrag.cellStyle.dataFormat
+                        ),
+                        CellInfo(""),
+                        CellInfo(""),
+                        CellInfo(nettoFact.rawCellValue(nettoFact.columnIndex, 11), nettoFact.cellType, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(""),
+                        CellInfo(""),
+                        CellInfo(percentRv.rawCellValue(nettoFact.columnIndex, 14), percentRv.cellType, horizontalAlignment = HorizontalAlignment.RIGHT)
                     )
                 }
                 else -> {
 
                     //normal row
-                    val referentieRaw = referentie.stringCellValue
+                    val referentieRaw = referentie.rawCellValue
                     val referentieS = if (referentieRaw.length == 12 && referentieRaw.matches("\\d+".toRegex())) {
                         val firstThree = referentieRaw.substring(0, 3)
                         val secondFour = referentieRaw.substring(3, 8)
@@ -145,21 +153,27 @@ class Main(args: Array<String>) {
                     } else referentieRaw
 
                     map[row.rowNum] = arrayOf(
-                        CellInfo(rekeningNummer.stringCellValue.insertCharEach(4, ' '), FontOptions(22)),
-                        CellInfo(teBetLev.numericCellValue, FontOptions(22), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo(referentieS, FontOptions(22)),
-                        CellInfo(naam.stringCellValue, FontOptions()),
-                        CellInfo(lRekening.rawCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo(docNr.stringCellValue, FontOptions()),
-                        CellInfo(docDatum.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo("", FontOptions()),
-                        CellInfo(brutoBedrag.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo("", FontOptions()),
-                        CellInfo(btw.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo(nettoFact.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo(kosten.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo(basisRv.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT),
-                        CellInfo(percentRv.numericCellValue, FontOptions(), horizontalAlignment = HorizontalAlignment.RIGHT)
+                        CellInfo(rekeningNummer.rawCellValue.insertCharEach(4, ' '), font = FontOptions(22)),
+                        CellInfo(
+                            teBetLev.rawCellValue, teBetLev.cellType, FontOptions(22),
+                            HorizontalAlignment.RIGHT, format = teBetLev.cellStyle.dataFormat
+                        ),
+                        CellInfo(referentieS, font = FontOptions(22)),
+                        CellInfo(naam.rawCellValue, naam.cellType),
+                        CellInfo(lRekening.rawCellValue, lRekening.cellType, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(docNr.rawCellValue, docNr.cellType),
+                        CellInfo(docDatum.rawCellValue, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(""),
+                        CellInfo(
+                            brutoBedrag.rawCellValue, brutoBedrag.cellType,
+                            horizontalAlignment = HorizontalAlignment.RIGHT, format = brutoBedrag.cellStyle.dataFormat
+                        ),
+                        CellInfo(""),
+                        CellInfo(btw.rawCellValue, btw.cellType, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(nettoFact.rawCellValue, nettoFact.cellType, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(kosten.rawCellValue, kosten.cellType, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(basisRv.rawCellValue, basisRv.cellType, horizontalAlignment = HorizontalAlignment.RIGHT),
+                        CellInfo(percentRv.rawCellValue, percentRv.cellType, horizontalAlignment = HorizontalAlignment.RIGHT)
                     )
                 }
             }
@@ -173,19 +187,19 @@ class Main(args: Array<String>) {
 
             for ((cellIndex, cellInfo) in cellArray.withIndex()) {
                 val cell = row.createCell(cellIndex)
-                when (cellInfo.content) {
-                    is String -> cell.setCellValue(cellInfo.content)
-                    is Double -> cell.setCellValue(cellInfo.content)
-                    is Boolean -> cell.setCellValue(cellInfo.content)
-                    is Date -> cell.setCellValue(cellInfo.content)
-                    is Calendar -> cell.setCellValue(cellInfo.content)
-                    else -> cell.setCellValue(cellInfo.content.toString())
+                when (cellInfo.cellType) {
+                    CellType.STRING -> cell.setCellValue(cellInfo.contentString())
+                    CellType.NUMERIC -> cell.setCellValue(cellInfo.contentDouble())
+                    CellType.BOOLEAN -> cell.setCellValue(cellInfo.contentBoolean())
+                    CellType.FORMULA -> cell.cellFormula = cellInfo.contentFormula()
+                    else -> {}
                 }
 
                 val font = doc.createFont()
                 val newStyle = doc.createCellStyle()
                 newStyle.alignment = cellInfo.horizontalAlignment
                 newStyle.verticalAlignment = cellInfo.verticalAlignment
+                cellInfo.format?.let { newStyle.dataFormat = it }
                 font.bold = cellInfo.font.bold
                 font.fontHeightInPoints = cellInfo.font.size
                 newStyle.setFont(font)

@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
 
 
 class Main(args: Array<String>) {
@@ -147,9 +146,9 @@ class Main(args: Array<String>) {
                     val referentieRaw = referentie.rawCellValue
                     val referentieS = if (referentieRaw.length == 12 && referentieRaw.matches("\\d+".toRegex())) {
                         val firstThree = referentieRaw.substring(0, 3)
-                        val secondFour = referentieRaw.substring(3, 8)
-                        val thirdFour = referentieRaw.substring(8, 12)
-                        "$firstThree/$secondFour/$thirdFour"
+                        val secondFour = referentieRaw.substring(3, 7)
+                        val thirdFive = referentieRaw.substring(7, 12)
+                        "$firstThree/$secondFour/$thirdFive"
                     } else referentieRaw
 
                     map[row.rowNum] = arrayOf(
